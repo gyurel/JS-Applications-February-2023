@@ -34,7 +34,7 @@ function createStudents(){
             tr.appendChild(td3);
 
             let td4 = document.createElement('td');
-            td4.textContent = currentStudent['grade'].toFixed(2);
+            td4.textContent = currentStudent['grade'];
             tr.appendChild(td4);
 
             debugger
@@ -51,7 +51,7 @@ function createStudents(){
         let firstName = firstNameField.value;
         let lastName = lastNameField.value;
         let facultyNumber = facultyNumberField.value;
-        let grade = Number(gradeField.value);
+        let grade = gradeField.value;
 
 
         let data = {
