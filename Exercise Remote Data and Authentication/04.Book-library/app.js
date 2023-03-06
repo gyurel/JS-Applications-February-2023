@@ -66,11 +66,22 @@ function solve(){
         let author = bookData.author;
         let title = bookData.title;
         
-        debugger
+        
         inputAuthor.value = author;
         inputTitle.value = title;
         
         submitButton.addEventListener('click', saveBook);
+
+        let buttons = Array.from(document.querySelectorAll('button'));
+        let editButtons = buttons.slice(1, buttons.length - 1);
+
+        for (const editButton of buttons) {
+            debugger
+            if(editButton.textContent == 'Edit'){
+                editButton.disabled = true;
+            }
+            
+        }
 
 
         async function saveBook(event){
@@ -83,7 +94,7 @@ function solve(){
                 return;
             }
 
-            debugger
+            
             let data = {
                 author,
                 title
@@ -107,6 +118,17 @@ function solve(){
 
             submitButton.addEventListener('click', submitBook);
 
+            let buttons = Array.from(document.querySelectorAll('button'));
+            let editButtons = buttons.slice(1, buttons.length - 1);
+    
+            for (const editButton of buttons) {
+                debugger
+                if(editButton.textContent == 'Edit'){
+                    editButton.disabled = false;
+                }
+                
+            }
+
             loadButton.click();
         }
     }
@@ -125,7 +147,7 @@ function solve(){
         loadButton.click();
     }
 
-    
+
     async function submitBook(event){
         event.preventDefault();
 
