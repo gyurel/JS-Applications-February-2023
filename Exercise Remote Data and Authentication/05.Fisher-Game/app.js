@@ -1,0 +1,5 @@
+function fisherGameApp(){
+
+}
+
+fisherGameApp();
