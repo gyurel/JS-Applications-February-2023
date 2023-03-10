@@ -43,8 +43,8 @@ async function onRegister(event){
         let registerResponse = await fetch('http://localhost:3030/users/register', options);
 
         if(!registerResponse.ok){
-            let error = new Error(registerResponse.message);
-            throw error;
+            let error = await registerResponse.json();
+            throw new Error(error.message);
         }
 
         let registerData = await registerResponse.json();
