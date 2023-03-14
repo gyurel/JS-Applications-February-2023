@@ -1,22 +1,15 @@
 import { showComments } from "./comments.js";
-
-const postButton = document.getElementById('postBtn');
-postButton.addEventListener('click', publishNewPost)
-
-const cancelButton = document.getElementById('cancelBtn');
-cancelButton.addEventListener('click', cancelPost);
-
-const postsDiv = document.querySelector('.topic-title');
-postsDiv.innerHTML = '';
-
-
-const homeView = document.getElementById('home');
-const postForm = homeView.querySelector('form');
-homeView.remove();
-
+import { checkResponseStatus } from "./utils.js";
 
 
 export async function showHome(event){
+    
+
+    const postsDiv = document.querySelector('.topic-title');
+    postsDiv.innerHTML = '';
+
+    // const homeView = document.getElementById('home');
+    // homeView.remove();
     
     if(event != undefined){
         event.preventDefault();
@@ -25,10 +18,7 @@ export async function showHome(event){
     try {
         const postsResponse = await fetch('http://localhost:3030/jsonstore/collections/myboard/posts');
 
-        if(!postsResponse.ok){
-            let error = postsResponse.json();
-            throw new Error(error.message);
-        }
+        checkResponseStatus(postsResponse);
 
         const postsData = await postsResponse.json();
 
@@ -40,24 +30,24 @@ export async function showHome(event){
             // let currentTime = new Date();
 
             let currentInner = `<div class="topic-container">
-            <div class="topic-name-wrapper">
-                    <div class="topic-name">
-                        <a href="javascript:void(0)" data-postid="${currentPost['_id']}" class="normal">
-                            <h2>${currentPost.topicName}</h2>
-                        </a>
-                        <div class="columns">
-                            <div>
-                                <p>Date: <time>${currentPost.creationTime}</time></p>
-                                <div class="nick-name">
-                                    <p>Username: <span>${currentPost.userName}</span></p>
-                                </div>
-                            </div>
+                                <div class="topic-name-wrapper">
+                                        <div class="topic-name">
+                                            <a href="javascript:void(0)" data-postid="${currentPost['_id']}" class="normal">
+                                                <h2>${currentPost.topicName}</h2>
+                                            </a>
+                                            <div class="columns">
+                                                <div>
+                                                    <p>Date: <time>${currentPost.creationTime}</time></p>
+                                                    <div class="nick-name">
+                                                        <p>Username: <span>${currentPost.userName}</span></p>
+                                                    </div>
+                                                </div>
 
 
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
 
             innerString += currentInner;
 
@@ -69,7 +59,7 @@ export async function showHome(event){
         
         anchorElements.forEach(element => element.addEventListener('click', showComments));
 
-        document.querySelector('.container').replaceChildren(homeView);
+        // document.querySelector('.container').replaceChildren(homeView);
         
     } catch (error) {
         alert(error.message);
@@ -80,8 +70,10 @@ export async function showHome(event){
 
 }
 
-async function publishNewPost(event){
+export async function publishNewPost(event){
     event.preventDefault();
+
+    const postForm = document.querySelector('form');
 
     let formData = new FormData(postForm);
     let {topicName, userName, postText} = Object.fromEntries(formData);
@@ -89,7 +81,6 @@ async function publishNewPost(event){
     let arr = formData.values();
 
     
-    // let currentId = String(Math.floor(Math.random() * 100000000000000));
     let creationTime = new Date();
 
     
@@ -116,12 +107,8 @@ async function publishNewPost(event){
     try {
         let postRespons = await fetch('http://localhost:3030/jsonstore/collections/myboard/posts', options);
 
-        if(!postRespons.ok){
-            let error = postRespons.json();
-            throw new Error(error.message);
-        }
+        checkResponseStatus(postRespons);
 
-        // let postData = await postRespons.json();
 
         postForm.reset();
 
@@ -134,7 +121,7 @@ async function publishNewPost(event){
 }
 
 
-function cancelPost(event){
+export function cancelPost(event){
     event.preventDefault();
     postForm.reset();
 }

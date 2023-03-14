@@ -1,12 +1,14 @@
 import { checkResponseStatus } from "./utils.js";
 
-const commentsView = document.getElementById('post-comments');
-commentsView.remove();
+
 
 
 export async function showComments(event){
+    let mainContainer = document.querySelector('.container');
+    mainContainer.innerHTML = '';
+
     let currentLink = event.target;
-    debugger
+    
     let postId = event.target.parentElement.dataset.postid;
 
     const mainDiv = document.createElement('div');
@@ -17,7 +19,7 @@ export async function showComments(event){
         let currentPostResponse = await fetch(`http://localhost:3030/jsonstore/collections/myboard/posts/${postId}`);
 
         checkResponseStatus(currentPostResponse);
-        debugger
+        
 
         let postData = await currentPostResponse.json();
         
@@ -81,6 +83,7 @@ export async function showComments(event){
 
 
         let divAnswerCommentForm = document.createElement('div');
+        divAnswerCommentForm.className = 'answer-comment';
         let divAnswerCommentInner = `<p><span>currentUser</span> comment:</p>
                                         <div class="answer">
                                             <form>
@@ -97,7 +100,7 @@ export async function showComments(event){
 
 
         mainDiv.appendChild(divAnswerCommentForm);
-        debugger
+        
         mainDiv.querySelector('form').addEventListener('submit', submitComment);
 
 
@@ -107,15 +110,12 @@ export async function showComments(event){
         
     }
     
-    commentsView.innerHTML = '';
-    
-    commentsView.appendChild(mainDiv);
-    
-    document.querySelector('.container').replaceChildren(commentsView);
+    document.querySelector('.container').replaceChildren(mainDiv);
 
 
     async function submitComment(event){
         event.preventDefault();
+        
 
         let currentPost = currentLink;
     
@@ -144,9 +144,10 @@ export async function showComments(event){
             let commentsResponse = await fetch('http://localhost:3030/jsonstore/collections/myboard/comments', options);
 
             checkResponseStatus(commentsResponse);
+            debugger
 
             commentForm.reset();
-            debugger
+            
             currentPost.click();
             
 
