@@ -12,12 +12,13 @@ catchesDiv.innerHTML = '';
 let mainFields = document.getElementById('main');
 mainFields.style.display = 'none';
 
-let paragraphHeading = document.createElement('p');
-paragraphHeading.textContent = 'Click to load catches';
-paragraphHeading.style.textAlign = 'center';
 
-let homeSection = document.getElementById('home-view');
-homeSection.prepend(paragraphHeading);
+// let paragraphHeading = document.createElement('p');
+// paragraphHeading.textContent = 'Click to load catches';
+// paragraphHeading.style.textAlign = 'center';
+
+// let homeSection = document.getElementById('home-view');
+// homeSection.prepend(paragraphHeading);
 
 let userData = JSON.parse(localStorage.getItem('userData'));
 
@@ -29,6 +30,7 @@ if(userData){
     document.getElementById('register').style.display = 'none';
     document.getElementById('login').style.display = 'none';
     document.querySelector('button[class="add"]').disabled = false;
+    loadCatches();
 }else{
     logoutButton.style.display = 'none';
     addButton.disabled = true;
@@ -37,7 +39,9 @@ if(userData){
 logoutButton.addEventListener('click', async () => {
         
         await fetch('http://localhost:3030/users/logout', {
-            headers: {'X-Authorization': authorizationToken}
+            headers: {
+                'Content-type': 'application-json',
+                'X-Authorization': authorizationToken}
         });
 
         localStorage.removeItem('userData');
@@ -50,8 +54,8 @@ async function addCatch(event){
     event.preventDefault();
     let formData = new FormData(addForm);
     let {angler, weight, species, location, bait, captureTime} = Object.fromEntries(formData);
-    weight = Number(weight);
-    captureTime = Number(captureTime);
+    weight = weight;
+    captureTime = captureTime;
 
     let data = {
         angler,
@@ -83,8 +87,8 @@ async function addCatch(event){
         let addCatchResponse = await fetch('http://localhost:3030/data/catches', options);
 
         if(!addCatchResponse.ok){
-            let error = new Error();
-            error.message = addCatchResponse.message;
+            let error = await addCatchResponse.json();
+            throw new Error(error.message);
         }
         
         await addCatchResponse.json();
@@ -94,19 +98,20 @@ async function addCatch(event){
 
     } catch (error) {
         addForm.reset();
-        throw alert(error.message);
+        alert(error.message);
+        throw error;
     }
 }
 
 async function loadCatches(event){
-    paragraphHeading.remove();
+    // paragraphHeading.remove();
     mainFields.style.display = 'inline-table';
     try {
         let loadResponse = await fetch('http://localhost:3030/data/catches');
         
         if(!loadResponse.ok){
-            let error = new Error(loadResponse.message);
-            throw error;
+            let error = await loadResponse.json();
+            throw new Error(error.message);
         }
 
         let loadData = await loadResponse.json();
@@ -181,11 +186,11 @@ async function deleteCatch(event){
         });
 
         if(!deleteResponse.ok){
-            let error = new Error(deleteResponse.message);
-            throw error;
+            let error = deleteResponse.json();
+            throw new Error(error.message);
         }
     
-        // await deleteResponse.json();
+        await deleteResponse.json();
     
         loadButton.click();
         
@@ -202,11 +207,11 @@ async function updateCatch(event){
     let catchId = event.target.dataset.self;
     let data = {
         "angler": inputSet[0].value,
-        "weight": Number(inputSet[1].value),
+        "weight": inputSet[1].value,
         "species": inputSet[2].value,
         "location": inputSet[3].value,
         "bait": inputSet[4].value,
-        "captureTime": Number(inputSet[5].value)
+        "captureTime": inputSet[5].value
     }
     
     let options = {
@@ -223,11 +228,11 @@ async function updateCatch(event){
     let updateResponse = await fetch(`http://localhost:3030/data/catches/${catchId}`, options);
 
     if(!updateResponse.ok){
-        let error = new Error(updateResponse.message);
-        throw error;
+        let error = updateResponse.json();
+        throw new Error(error.message);
     }
 
-    // await updateResponse.json();
+    await updateResponse.json();
 
     loadButton.click();
         

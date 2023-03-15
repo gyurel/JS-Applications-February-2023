@@ -1,4 +1,4 @@
-document.querySelector('a[id="login"]').style.display = 'none';
+// document.querySelector('a[id="login"]').style.display = 'none';
 
 let userData = JSON.parse(localStorage.getItem('userData'));
 
@@ -10,7 +10,7 @@ let loginForm = document.querySelector('form');
 loginForm.addEventListener('submit', loginUser);
 
 
-async function loginUser(e){
+export async function loginUser(e){
     e.preventDefault();
 
     let formData = new FormData(e.target);
@@ -33,7 +33,6 @@ async function loginUser(e){
 
         if(!loginResponse.ok){
             let error = await loginResponse.json();
-    
             throw new Error(error.message);
         }
     
@@ -52,6 +51,7 @@ async function loginUser(e){
     } catch (error) {
         loginForm.reset();
         alert(error.message);
+        throw error;
     }
 }
 

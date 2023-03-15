@@ -1,5 +1,5 @@
 document.getElementById('logout').style.display = 'none';
-// document.getElementById('register').style.display = 'none';
+document.getElementById('register').style.display = 'none';
 let registerForm = document.querySelector('form');
 registerForm.addEventListener('submit', onRegister);
 
@@ -36,7 +36,7 @@ async function onRegister(event){
     
         let options = {
             method: 'post',
-            header: {'Content-type': 'application-json'},
+            headers: {'Content-type': 'application-json'},
             body: JSON.stringify(userData)
         }
         
@@ -63,6 +63,7 @@ async function onRegister(event){
         
     } catch (error) {
         registerForm.reset();
-        throw alert(error.message);
+        alert(error.message);
+        throw error;
     }
 }

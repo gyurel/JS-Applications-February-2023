@@ -50,7 +50,7 @@ const endpoints = {
   login: '/users/login',
   logout: '/users/logout',
   catalog: '/data/catches',
-  create: '/data/catches ',
+  create: '/data/catches',
   details: (id) => `/data/catches/${id}`,
 };
 
