@@ -54,7 +54,7 @@ export async function showMovieDetails(event){
         editButton.addEventListener('click', showEditMovieView);
 
         
-        debugger
+        
         let ownLikeResponse = userData ? await fetch(host + endpoints.own(movieId, userData._id)): {ok: true};
         if(!ownLikeResponse.ok){
             let error = await ownLikeResponse.json();
@@ -172,7 +172,7 @@ export async function showMovieDetails(event){
                 }
 
                 let totalLikesData = await totalLikesRespons.json();
-                debugger
+                
                 
                 likeButton.remove();
 
