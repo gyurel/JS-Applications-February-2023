@@ -53,13 +53,12 @@ export async function detailsPage(ctx){
     }
 
     async function onDelete(){
-        confirm('Are you sure that you want to delete this album?');
-        let deletionTime = await deleteAlbum(id);
-        ctx.page.redirect(`/dashboard`);
-        return deletionTime;
+        const choice = confirm('Are you sure that you want to delete this album?');
+
+        if(choice){
+          let deletionTime = await deleteAlbum(id);
+          ctx.page.redirect(`/dashboard`);
+          return deletionTime;
+        }
     }
 }
-
-
-
-   

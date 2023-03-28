@@ -20,7 +20,6 @@ async function request(method, url, data){
     }
 
     try {
-        debugger
         const response = await fetch(host + url, options);
         
         let result;
