@@ -3,7 +3,11 @@ import { showEditMovieView } from "./editMovieView.js";
 import { showHome } from "./homeView.js";
 import { checkResponseStatus, initiateSection } from "./utils.js";
 
+
+
 export async function showMovieDetails(event){
+    debugger
+
     try {
         let movieId = event.target.dataset.id;
         let userData = JSON.parse(localStorage.getItem('userData'));
@@ -39,7 +43,7 @@ export async function showMovieDetails(event){
                                         ${movieData.description}
                                         </p>
                                         <a class="btn btn-danger" href="javascript:void(0)" data-id="${movieId}">Delete</a>
-                                        <a class="btn btn-warning" href="javascript:void(0)" data-id="${movieId}">Edit</a>
+                                        <a id="edit-link" class="btn btn-warning" href="javascript:void(0)" data-id="${movieId}">Edit</a>
                                         <a class="btn btn-primary" href="javascript:void(0)" data-id="${movieId}">Like</a>
                                         <span class="enrolled-span">Liked 1</span>
                                     </div>
@@ -175,10 +179,7 @@ export async function showMovieDetails(event){
                 
                 
                 likeButton.remove();
-
-                let targetDiv = detailsSection.querySelector('.col-md-4');
                 likesSpan.textContent = `Liked ${totalLikesData}`;
-                targetDiv.appendChild(likesSpan);
                 
             } catch (error) {
                 alert(error.message);

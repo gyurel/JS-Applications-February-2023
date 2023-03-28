@@ -2,8 +2,10 @@ import { endpoints, host, store } from "./api.js";
 import { checkResponseStatus, initiateSection } from "./utils.js";
 import { addMoveView } from "./addMovieView.js";
 import { showMovieDetails } from "./showDetailsView.js";
+// import { showView } from "./app.js";
 
 export async function showHome(){
+    
     const homePageSection = store.homePageSection;
     initiateSection(homePageSection);
     const addMovieButton = homePageSection.querySelector('#add-movie-button').firstElementChild;
@@ -44,7 +46,10 @@ export async function showHome(){
                                 </div>`
             cardDiv.innerHTML = currentInner;
             let detailsButton = cardDiv.querySelector('button');
-            detailsButton.addEventListener('click', showMovieDetails);
+            detailsButton.addEventListener('click', (event)=>{
+                showView('movie-details', event);
+            });
+            
             ulMovieList.appendChild(cardDiv);
         }
         
