@@ -39,6 +39,7 @@ export async function detailsPage(ctx){
     let album = await getAlbumDetails(id);
     let userData = getUserData();
     let userLikes = userData ? await numberOfUserLikes(id, userData._id): null;
+    debugger
     let totalLIkes = await numberOfTotalLIkes(id);
     
     ctx.render(detailsTemplate(album, userData, userLikes, totalLIkes, onLike, onDelete));
