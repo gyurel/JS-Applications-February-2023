@@ -2,7 +2,6 @@ import page from '../node_modules/page/page.mjs'
 import { render } from '../node_modules/lit-html/lit-html.js'
 import { getUserData } from './util.js';
 import { layoutTemplate } from './views/layout.js';
-import { homePage } from './views/home.js';
 import { loginPage } from './views/login.js';
 import { registerPage } from './views/register.js';
 import { logout } from './data/auth.js';
@@ -10,6 +9,7 @@ import { dashboardPage } from './views/dashboard.js';
 import { addObjPage } from './views/addObj.js';
 import { detailsPage } from './views/details.js';
 import { editPage } from './views/edit.js';
+import { userDashboardPage } from './views/userDashboard.js';
 
 // TODO do not forget to import the app file into the index.html  !!!!!!!! <script src="/src/app.js" type="module"></script>
 // TODO change render root depending on project HTML structure
@@ -18,10 +18,10 @@ const root = document.body;
 //TODO change all links according to the requirements
 page(decorateContext);
 page('index.html', '/');
-page('/', homePage);
-page('/add/album', addObjPage);
-page('/dashboard', dashboardPage);
+page('/', dashboardPage);
 page('/dashboard/:id', detailsPage);
+page('/user/dashboard', userDashboardPage);
+page('/add/book', addObjPage);
 page('/edit/:id', editPage);
 page('/login', loginPage);
 page('/register', registerPage);
@@ -31,7 +31,6 @@ page.start();
 
 function decorateContext(ctx, next){
     ctx.render = renderView;
-
 
     next();
 }

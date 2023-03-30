@@ -2,15 +2,21 @@ import { del, get, post, put } from "./api.js"
 
 const endpoints = {
     // TODO review all endpoints
-    objects: '/data/albums?sortBy=_createdOn%20desc',
-    addNewObj: '/data/albums',
-    byId: '/data/albums/',
+    objects: '/data/books?sortBy=_createdOn%20desc',
+    addNewObj: '/data/books',
+    byId: '/data/books/',
     addLike: '/data/likes'
 }
 
 export async function getAllObj(){
     const albums =  await get(endpoints.objects);
     return albums;
+}
+
+export async function getUserObjects(userId){
+    const userObjectsUrl = `/data/books?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`;
+    const userObjects = await get(userObjectsUrl);
+    return userObjects;
 }
 
 export async function addObj(data){
@@ -23,21 +29,17 @@ export async function getObjDetails(id){
 
 export async function editObjDetails(id, {
     //TODO change object and its properties based on requirements 
-    singer,
-    album, 
-    imageUrl, 
-    release, 
-    label, 
-    sales
-  }){
+        title,
+        description,
+        imageUrl,
+        type
+    }){
     const editedAlbum = await put(endpoints.byId + id, {
         //TODO change object and its properties based on requirements 
-        singer,
-        album, 
-        imageUrl, 
-        release, 
-        label, 
-        sales
+        title,
+        description,
+        imageUrl,
+        type
       });
 
     return editedAlbum;
@@ -45,7 +47,7 @@ export async function editObjDetails(id, {
 
 export async function numberOfUserLikes(objId, userId){
     // TODO review link
-    let userLikesUrl = `/data/likes?where=albumId%3D%22${objId}%22%20and%20_ownerId%3D%22${userId}%22&count`;
+    let userLikesUrl = `/data/likes?where=bookId%3D%22${objId}%22%20and%20_ownerId%3D%22${userId}%22&count`;
     let userLikes = await get(userLikesUrl);
 
     return userLikes;
@@ -53,11 +55,13 @@ export async function numberOfUserLikes(objId, userId){
 
 export async function numberOfTotalLIkes(objId){
     // TODO review link
-    let likesUrl = `/data/likes?where=albumId%3D%22${objId}%22&distinct=_ownerId&count`;
+    let likesUrl = `/data/likes?where=bookId%3D%22${objId}%22&distinct=_ownerId&count`;
+
     let totalLikes = await get(likesUrl);
     
     return totalLikes;
 }
+
 
 export async function likeAnObj(objId){
     let likedAlbum = await post(endpoints.addLike, {objId});

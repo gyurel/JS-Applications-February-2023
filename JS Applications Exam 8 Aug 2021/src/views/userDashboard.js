@@ -1,5 +1,6 @@
 import { html } from "../../node_modules/lit-html/lit-html.js";
-import { getAllObj } from "../data/services.js";
+import { getUserObjects } from "../data/services.js";
+import { getUserData } from "../util.js";
 
 
 //TODO Replace with actual view
@@ -24,7 +25,8 @@ function objCard(obj){
 }
 
 
-export async function dashboardPage(ctx){
-    let obj = await getAllObj();
+export async function userDashboardPage(ctx){
+    let userData = getUserData();
+    let obj = await getUserObjects(userData._id);
     ctx.render(dashboardTemplate(obj));
 }

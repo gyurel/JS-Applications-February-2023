@@ -4,52 +4,47 @@ import { getUserData } from "../util.js";
 
 
 //TODO Replace with actual view
-const detailsTemplate = (album, userData, userLikes, totalLIkes, onLike, onDelete) => html`
-    <section id="details">
-        <div id="details-wrapper">
-          <p id="details-title">Album Details</p>
-          <div id="img-wrapper">
-            <img src="${album.imageUrl}" alt="example1" />
-          </div>
-          <div id="info-wrapper">
-            <p><strong>Band:</strong><span id="details-singer">${album.singer}</span></p>
-            <p>
-              <strong>Album name:</strong><span id="details-album">${album.album}</span>
-            </p>
-            <p><strong>Release date:</strong><span id="details-release">${album.release}</span></p>
-            <p><strong>Label:</strong><span id="details-label">${album.label}</span></p>
-            <p><strong>Sales:</strong><span id="details-sales">${album.sales}</span></p>
-          </div>
-          <div id="likes">Likes: <span id="likes-count">${totalLIkes}</span></div>
-
-          <!--Edit and Delete are only for creator-->
-          <div id="action-buttons">
-            ${userData == null ? null:
-            userData._id == album._ownerId ? html`
-            <a href="/edit/${album._id}" id="edit-btn">Edit</a>
-            <a @click=${onDelete} href="javascript:void(0)" id="delete-btn">Delete</a>`: 
-            userLikes == 0 ? html`<a @click=${onLike} href="" id="like-btn">Like</a>`: null}
-          </div>
-        </div>
-      </section>
-`;
+const detailsTemplate = (obj, userData, userLikes, totalLIkes, onLike, onDelete) => html`
+      <section id="details-page" class="details">
+            <div class="book-information">
+                <h3>${obj.title}</h3>
+                <p class="type">Type: ${obj.type}</p>
+                <p class="img"><img src=${obj.imageUrl}></p>
+                <div class="actions">
+                  ${userData == null ? null:
+                  userData._id == obj._ownerId ? html`
+                  <a class="button" href="/edit/${obj._id}">Edit</a>
+                  <a @click=${onDelete} class="button" href="javascript:void(0)">Delete</a>`: 
+                  userLikes == 0 ? html`<a @click=${onLike} class="button" href="javascript:void(0)">Like</a>`: null}
+                    <div class="likes">
+                        <img class="hearts" src="/images/heart.png">
+                        <span id="total-likes">Likes: ${totalLIkes}</span>
+                    </div>
+                    <!-- Bonus -->
+                </div>
+            </div>
+            <div class="book-description">
+                <h3>Description:</h3>
+                <p>${obj.description}</p>
+            </div>
+        </section>`;
 
 export async function detailsPage(ctx){
     let id = ctx.params.id;
     let obj = await getObjDetails(id);
     let userData = getUserData();
+    debugger
     let userLikes = userData ? await numberOfUserLikes(id, userData._id): null;
     let totalLIkes = await numberOfTotalLIkes(id);
-    
+    debugger
+
     ctx.render(detailsTemplate(obj, userData, userLikes, totalLIkes, onLike, onDelete));
 
 
     async function onLike(){
-        let currentObj = await likeAnObj(id);
+        await likeAnObj(id);
 
         ctx.page.redirect(`/dashboard/${id}`);
-
-        return currentObj;
     }
 
     async function onDelete(){
@@ -57,7 +52,7 @@ export async function detailsPage(ctx){
 
         if(choice){
           let deletionTime = await deleteObj(id);
-          ctx.page.redirect(`/dashboard`);
+          ctx.page.redirect(`/`);
           return deletionTime;
         }
     }

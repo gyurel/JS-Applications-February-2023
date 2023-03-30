@@ -20,14 +20,14 @@ async function request(method, url, data){
     }
 
     try {
-        const response = await fetch(host + url, options);
+        let response = await fetch(host + url, options);
 
         let result;
         if(response.status != 204){
             result = await response.json();
         }
 
-        if(response.ok == false){
+        if(!response.ok){
             if(response.status == 403){
                 clearUserData();
             }

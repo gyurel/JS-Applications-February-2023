@@ -5,25 +5,45 @@ import { createSubmitHandler } from "../util.js";
 
 //TODO Replace with actual view
 const registerTemplate = (onRegister) => html`
-<h1>register Page</h1>
-<form @submit=${onRegister}>
-    <label>Email: <input type="text" name="email"></label>
-    <label>Password: <input type="password" name="password"></label>
-    <label>Repeat: <input type="password" name="repass"></label>
-    <button>Register</button>
-</form>`;
+        <section id="register-page" class="register">
+            <form @submit=${onRegister} id="register-form" action="" method="">
+                <fieldset>
+                    <legend>Register Form</legend>
+                    <p class="field">
+                        <label for="email">Email</label>
+                        <span class="input">
+                            <input type="text" name="email" id="email" placeholder="Email">
+                        </span>
+                    </p>
+                    <p class="field">
+                        <label for="password">Password</label>
+                        <span class="input">
+                            <input type="password" name="password" id="password" placeholder="Password">
+                        </span>
+                    </p>
+                    <p class="field">
+                        <label for="repeat-pass">Repeat Password</label>
+                        <span class="input">
+                            <input type="password" name="confirm-pass" id="repeat-pass" placeholder="Repeat Password">
+                        </span>
+                    </p>
+                    <input class="button submit" type="submit" value="Register">
+                </fieldset>
+            </form>
+        </section>`;
+
 
 export function registerPage(ctx){
     ctx.render(registerTemplate(createSubmitHandler(onRegister)));
 
     //TODO change user object based on requirements 
-    async function onRegister({email, password, repass}, form){
-        if(email == '' || password == ''){
+    async function onRegister({email, password, "confirm-pass": repass}, form){
+        if(email == '' || password == '' || repass == ''){
             return alert('All fields are required!')
         }
 
         if(password != repass){
-            return alert('Password do not match!')
+            return alert('Passwords do not match!')
         }
         await register(email, password);
         form.reset();
