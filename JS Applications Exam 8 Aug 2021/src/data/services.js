@@ -63,10 +63,10 @@ export async function numberOfTotalLIkes(objId){
 }
 
 
-export async function likeAnObj(objId){
-    let likedAlbum = await post(endpoints.addLike, {objId});
+export async function likeAnObj(bookId){
+    let like = await post(endpoints.addLike, {bookId});
 
-    return likedAlbum;
+    return like;
 }
 
 

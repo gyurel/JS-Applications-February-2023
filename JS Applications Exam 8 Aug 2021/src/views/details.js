@@ -11,11 +11,15 @@ const detailsTemplate = (obj, userData, userLikes, totalLIkes, onLike, onDelete)
                 <p class="type">Type: ${obj.type}</p>
                 <p class="img"><img src=${obj.imageUrl}></p>
                 <div class="actions">
+
                   ${userData == null ? null:
+
                   userData._id == obj._ownerId ? html`
                   <a class="button" href="/edit/${obj._id}">Edit</a>
                   <a @click=${onDelete} class="button" href="javascript:void(0)">Delete</a>`: 
+
                   userLikes == 0 ? html`<a @click=${onLike} class="button" href="javascript:void(0)">Like</a>`: null}
+                  
                     <div class="likes">
                         <img class="hearts" src="/images/heart.png">
                         <span id="total-likes">Likes: ${totalLIkes}</span>
@@ -42,7 +46,8 @@ export async function detailsPage(ctx){
 
 
     async function onLike(){
-        await likeAnObj(id);
+        let like = await likeAnObj(id);
+        console.log(like);
 
         ctx.page.redirect(`/dashboard/${id}`);
     }

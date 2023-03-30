@@ -4,12 +4,14 @@ import { getUserData } from "../util.js";
 
 
 //TODO Replace with actual view
-const dashboardTemplate = (obj) => html`
-      <section id="dashboard-page" class="dashboard">
-            <h1>Dashboard</h1>
-            <ul class="other-books-list">
-              ${obj.length > 0 ? obj.map(objCard): html`<p class="no-books">No books in database!</p>`}
+const dashboardTemplate = (objList) => html`
+        <section id="my-books-page" class="my-books">
+            <h1>My Books</h1>
+            <!-- Display ul: with list-items for every user's books (if any) -->
+            <ul class="my-books-list">
+                ${objList.length > 0 ? objList.map(objCard): html`<p class="no-books">No books in database!</p>`}
             </ul>
+            <!-- Display paragraph: If the user doesn't have his own books  -->
         </section>`;
 
 
@@ -27,6 +29,7 @@ function objCard(obj){
 
 export async function userDashboardPage(ctx){
     let userData = getUserData();
-    let obj = await getUserObjects(userData._id);
-    ctx.render(dashboardTemplate(obj));
+    let userSpecificObjs = await getUserObjects(userData._id);
+    debugger
+    ctx.render(dashboardTemplate(userSpecificObjs));
 }
