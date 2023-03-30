@@ -45,11 +45,9 @@ export async function detailsPage(ctx){
 
     async function onDonate(){
         debugger
-        let currentObj = await donateToAnObj(id);
+        await donateToAnObj(id);
 
         ctx.page.redirect(`/dashboard/${id}`);
-
-        return currentObj;
     }
 
     async function onDelete(){

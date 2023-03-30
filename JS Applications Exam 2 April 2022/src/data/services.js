@@ -51,8 +51,8 @@ export async function numberOfTotalDonations(objId){
     return totalDonations;
 }
 
-export async function donateToAnObj(objId){
-    let donatedPet = await post(endpoints.addDonation, {objId});
+export async function donateToAnObj(petId){
+    let donatedPet = await post(endpoints.addDonation, {petId});
 
     return donatedPet;
 }
