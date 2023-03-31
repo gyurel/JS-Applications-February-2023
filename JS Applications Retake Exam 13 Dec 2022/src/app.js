@@ -19,7 +19,7 @@ const root = document.body;
 page(contextRenderNextMiddleware);
 page('index.html', '/');
 page('/', homePage);
-page('/add/album', addObjPage);
+page('/add/product', addObjPage);
 page('/dashboard', dashboardPage);
 page('/dashboard/:id', detailsPage);
 page('/edit/:id', editPage);

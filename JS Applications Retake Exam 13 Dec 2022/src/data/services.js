@@ -2,10 +2,10 @@ import { del, get, post, put } from "./api.js"
 
 const endpoints = {
     // TODO review all endpoints
-    objects: '/data/albums?sortBy=_createdOn%20desc',
-    addNewObj: '/data/albums',
-    byId: '/data/albums/',
-    addLike: '/data/likes'
+    objects: '/data/products?sortBy=_createdOn%20desc',
+    addNewObj: '/data/products',
+    byId: '/data/products/',
+    buy: '/data/bought'
 }
 
 export async function getAllObj(){
@@ -23,37 +23,33 @@ export async function getObjDetails(id){
 
 export async function editObjDetails(id, {
     //TODO change object and its properties based on requirements 
-    singer,
-    album, 
+    name,
     imageUrl, 
-    release, 
-    label, 
-    sales
-  }){
+    category, 
+    description, 
+    price}){
     const editedAlbum = await put(endpoints.byId + id, {
         //TODO change object and its properties based on requirements 
-        singer,
-        album, 
+        name,
         imageUrl, 
-        release, 
-        label, 
-        sales
-      });
+        category, 
+        description, 
+        price});
 
     return editedAlbum;
 }
 
-export async function numberOfUserLikes(objId, userId){
+export async function numberOfUserBuys(objId, userId){
     // TODO review link
-    let userLikesUrl = `/data/likes?where=albumId%3D%22${objId}%22%20and%20_ownerId%3D%22${userId}%22&count`;
+    let userLikesUrl = `/data/bought?where=productId%3D%22${objId}%22%20and%20_ownerId%3D%22${userId}%22&count`;
     let userLikes = await get(userLikesUrl);
 
     return userLikes;
 }
 
-export async function numberOfTotalLIkes(objId){
+export async function numberOfTotalBuys(objId){
     // TODO review link
-    let likesUrl = `/data/likes?where=albumId%3D%22${objId}%22&distinct=_ownerId&count`;
+    let likesUrl = `/data/bought?where=productId%3D%22${objId}%22&distinct=_ownerId&count`;
     let totalLikes = await get(likesUrl);
     
     return totalLikes;
@@ -61,8 +57,8 @@ export async function numberOfTotalLIkes(objId){
 
 
 //TODO  rename the cardId according to the requirements !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export async function likeAnObj(cardId){
-    let likedObj = await post(endpoints.addLike, {cardId});
+export async function buyAnObj(productId){
+    let likedObj = await post(endpoints.buy, {productId});
 
     return likedObj;
 }

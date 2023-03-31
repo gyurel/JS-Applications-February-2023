@@ -4,27 +4,25 @@ import { getAllObj } from "../data/services.js";
 
 //TODO Replace with actual view
 const dashboardTemplate = (albums) => html`
-    <section id="dashboard">
-        <h2>Albums</h2>
-        <ul class="card-wrapper">
-          ${albums.length > 0 ? albums.map(objCard): html`<h2>There are no albums added yet.</h2>`}
-      </section>`;
+      <h2>Products</h2>
+        <section id="dashboard">
+          <!-- Display a div with information about every post (if any)-->
+          ${albums.length > 0 ? albums.map(objCard): html`<h2>No products yet.</h2>`}
+
+        </section>`;
 
 
 //TODO Replace with actual card html
 function objCard(obj){
     return html`
-        <li class="card">
-            <img src=${obj.imageUrl} alt="travis" />
-            <p>
-              <strong>Singer/Band: </strong><span class="singer">${obj.singer}</span>
+        <div class="product">
+            <img src=${obj.imageUrl} alt="example1" />
+            <p class="title">
+              ${obj.name}
             </p>
-            <p>
-              <strong>Album name: </strong><span class="album">${obj.album}</span>
-            </p>
-            <p><strong>Sales:</strong><span class="sales">${obj.sales}</span></p>
+            <p><strong>Price:</strong><span class="price">${obj.price}</span>$</p>
             <a class="details-btn" href="/dashboard/${obj._id}">Details</a>
-        </li>`;
+          </div>`;
 }
 
 
